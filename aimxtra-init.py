@@ -1,4 +1,3 @@
-
 import time
 
 import hid
@@ -15,4 +14,3 @@ while True:
         print(d)
     else:
         break
-

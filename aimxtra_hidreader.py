@@ -1,9 +1,10 @@
 import time
 
 import hid
+
 import aim_parser
 
-parser = aim_parser.AimParser(aim_parser.PacketStructureManager())
+parser = aim_parser.AimParser()
 
 dev = hid.device()
 # for some reason the info changes so
@@ -23,4 +24,3 @@ while True:
         # print(packets)
         print(d)
     oldData = d
-
