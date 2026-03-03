@@ -19,7 +19,8 @@ while True:
     d = dev.read(64)
     if d != oldData:
         packets = []
-        packets = parser.parse_transmission(bytes(d))
-        print(packets)
+        # packets = parser.parse_transmission(bytes(d))
+        # print(packets)
+        print(d)
     oldData = d
 
