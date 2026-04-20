@@ -209,12 +209,12 @@ class AimParser:
         i = 3
 
         while i < length:
-            print(f"Parsing at index {i} with first byte {transmission[i]} / {hex(transmission[i])}")
             i += 2
+            print(f"Parsing at index {i} with first byte {transmission[i]} / {hex(transmission[i])}")
 
             delta_time = transmission[i]
             delimiter = transmission[i + 1]
-
+            print("Delimiter: " + str(hex(delimiter)))
             data = [time_received, time_received + float(delta_time)]
 
             # -----------------------------
@@ -248,7 +248,7 @@ class AimParser:
             elif delimiter in (0x07, 0x0A):
                 print("woa custom lines")
                 i += 2
-                
+
             elif delimiter == 0x0B:  # Accel XY
                 x = struct.unpack(">h", transmission[i + 2 : i + 4])[0] / 256.0
                 y = struct.unpack(">h", transmission[i + 4 : i + 6])[0] / 256.0
@@ -271,7 +271,7 @@ class AimParser:
 
                 data.extend([x, y, z])
                 packets.append(Packet.default(self.packet_types.mag, data))
-                
+
                 i += 6
 
             elif delimiter == 0x0E:
@@ -282,7 +282,8 @@ class AimParser:
                 sat_num = struct.unpack(">c", int.to_bytes(transmission[i + 14] & 0b00011111))
 
                 data.extend([lat, lon, msl, lock, sat_num])
-                
+                i += 13
+
 
             elif delimiter == 0x0F:  # RSSI
                 val = struct.unpack(">h", transmission[i + 2 : i + 4])[0]
@@ -324,9 +325,10 @@ class AimParser:
                     struct.unpack(">?", int.to_bytes(transmission[i + 8] & 0b01000000))[0],
                     struct.unpack(">c", int.to_bytes(transmission[i + 8] & 0b00111111))[0]])
                 packets.append(Packet.default(self.packet_types.gps_time, data))
+                i += 7
 
             elif delimiter == 0x14:
-                data.extend([struct.unpack(">I", transmission[i + 2 : i + 4])[0]])
+                data.extend([struct.unpack(">H", transmission[i + 2 : i + 4])[0]])
                 packets.append(Packet.default(self.packet_types.timestamp, data))
                 i += 4
 
@@ -337,7 +339,7 @@ class AimParser:
                 i += 8
 
             else:
-                # raise ValueError(f"Unknown packet delimiter: {hex(delimiter)}")
-                print("its a packet we don't know " + hex(delimiter))
+                raise ValueError(f"Unknown packet delimiter: {hex(delimiter)}")
+                # print("its a packet we don't know " + hex(delimiter))
 
         return packets
