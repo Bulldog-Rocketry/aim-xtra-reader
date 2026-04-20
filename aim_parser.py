@@ -189,7 +189,7 @@ class AimParser:
 
     def parse_transmission(self, transmission: bytearray) -> list[Packet]:
 
-        print(f"Begin parse transmission {transmission}")
+        # print(f"Begin parse transmission {transmission}")
 
         packets = []
 
@@ -204,17 +204,17 @@ class AimParser:
 
         packets.append(Packet.default(self.packet_types.meta, [time_received, float(rssi), float(snr)]))
 
-        print("\n".join(map(repr, packets)))
+        # print("\n".join(map(repr, packets)))
 
         i = 3
 
         while i < length:
             i += 2
-            print(f"Parsing at index {i} with first byte {transmission[i]} / {hex(transmission[i])}")
+            # print(f"Parsing at index {i} with first byte {transmission[i]} / {hex(transmission[i])}")
 
             delta_time = transmission[i]
             delimiter = transmission[i + 1]
-            print("Delimiter: " + str(hex(delimiter)))
+            # print("Delimiter: " + str(hex(delimiter)))
             data = [time_received, time_received + float(delta_time)]
 
             # -----------------------------

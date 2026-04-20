@@ -19,12 +19,18 @@ while True:
     dev.write([0x03, 0x12] + [0] * 62)
     d = dev.read(64)
     if d != oldData:
-        print([(hex(x) if 1 < x < 21 else str(x)) for x in d])
+        # print([(hex(x) if 1 < x < 21 else str(x)) for x in d])
         packets = []
         packets = parser.parse_transmission(bytes(d))
-        print(packets)
-        # for packet in packets:
-        #     print(packet.field_data[2])
+        # print(packets)
+        for packet in packets:
+            # print(packet.structure.name)
+            if packet.structure.name == "Aim_AccelZ":
+                # print(packet.structure)
+                print("Z acceleration: ", end="")
+                print(packet.field_data[2].value)
+                
+            # print(packet.field_data[2])
         # print(d)
     oldData = d
 
