@@ -29,7 +29,7 @@ while True:
                 # print(packet.structure)
                 print("Z acceleration: ", end="")
                 print(packet.field_data[2].value)
-                
+
             # print(packet.field_data[2])
         # print(d)
     oldData = d
