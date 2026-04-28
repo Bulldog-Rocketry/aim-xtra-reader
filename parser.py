@@ -46,26 +46,6 @@ class Packet:
         return Packet(structure, [PacketFieldValue(v) for v in raw_values])
 
 
-META = "Aim_Meta"
-ACCEL_Z = "Aim_AccelZ"
-PRESSURE = "Aim_Pressure"
-COMP_BATT = "Aim_BatComp"
-EJECT_BATT = "Aim_BatEject"
-TEMP = "Aim_Temp"
-LINE_A = "Aim_LineA"
-LINE_B = "Aim_LineB"
-LINE_C = "Aim_LineC"
-LINE_D = "Aim_LineD"
-ACCEL_XY = "Aim_AccelXY"
-GYRO = "Aim_GyroXYZ"
-MAG = "Aim_MagXYZ"
-GPS = "Aim_GPSLLSOL"
-RSSI = "Aim_RSSI"
-STATUS = "Aim_Status"
-IDENTIFIER = "Aim_Ident"
-GPS_TIME = "Aim_GPSTime"
-TIMESTAMP = "Aim_TimeStamp"
-ORIENTATION = "Aim_Orientation"
 
 
 # this can def be consolidated with the above consts
@@ -109,6 +89,39 @@ delimiter_packet_length = {
     0x11: 6,  # Identifier
     0x15: 8,  # Orientation
 }
+
+META = "Aim_Meta"
+ACCEL_Z = "Aim_AccelZ"
+PRESSURE = "Aim_Pressure"
+COMP_BATT = "Aim_BatComp"
+EJECT_BATT = "Aim_BatEject"
+TEMP = "Aim_Temp"
+LINE_A = "Aim_LineA"
+LINE_B = "Aim_LineB"
+LINE_C = "Aim_LineC"
+LINE_D = "Aim_LineD"
+ACCEL_XY = "Aim_AccelXY"
+GYRO = "Aim_GyroXYZ"
+MAG = "Aim_MagXYZ"
+GPS = "Aim_GPSLLSOL"
+RSSI = "Aim_RSSI"
+STATUS = "Aim_Status"
+IDENTIFIER = "Aim_Ident"
+GPS_TIME = "Aim_GPSTime"
+TIMESTAMP = "Aim_TimeStamp"
+ORIENTATION = "Aim_Orientation"
+
+
+@dataclass
+class packetDataMixin:
+    delimiter: int
+    packetLength: int
+    dataNames: list[str]
+
+
+class packetData(packetDataMixin, Enum):
+    meta = 0x00, 0, ["System time", "RSSI", "SNR"]
+    accelZ = 0x02, 2, ["System time", "Delta time", "Z acceleration"]
 
 
 # ============================================================
